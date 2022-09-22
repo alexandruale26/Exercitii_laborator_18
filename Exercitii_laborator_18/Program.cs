@@ -55,14 +55,14 @@ DataLayer.AddManufacturer("Mazda", "Fuchu Japan");
 DataLayer.AddAutovehicleKeys(11, 3);
 DataLayer.AddManufacturerToAutovehicle(11, 5);
 DataLayer.AddOrReplaceVehicleIdentificationCard(10, 1300, 2023, "JAP1112222333");
-DataLayer.AddOrReplaceVehicleIdentificationCard(6, 3500, 2018, "WAUZZZ885320147");
+DataLayer.AddOrReplaceVehicleIdentificationCard(7, 3500, 2018, "WAUZZZ885320147");
 DataLayer.RemoveAutovehicle(4);
 DataLayer.RemoveManufacturer(1);
 DataLayer.RemoveAutovehicleKey(16);
 //DataLayer.RemoveAutovehicleKey(17);
 
 var mazdaRx8 = context.Autovehicles.Include(a => a.Keys).First(a => a.AutovehicleId == 11);
-foreach(var key in mazdaRx8.Keys)
+foreach (var key in mazdaRx8.Keys)
 {
     Console.WriteLine(key.KeyId);
 }

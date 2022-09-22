@@ -22,7 +22,7 @@ namespace Exercitii_laborator_18
             var newAuto = new Autovehicle
             {
                 Name = name,
-                ManufacturerId = manufacturerId,
+                Manufacturer = context.Manufacturers.FirstOrDefault(m => m.ManufacturerId == manufacturerId),
                 Keys = newKeys,
                 VehicleIdentificationCard = newVic
             };
@@ -86,7 +86,7 @@ namespace Exercitii_laborator_18
                 throw new ManufacturerDoesNotExistsException();
             }
 
-            context.Autovehicles.First(a => a.AutovehicleId == autovehicleId).ManufacturerId = manufacturerId;
+            context.Autovehicles.First(a => a.AutovehicleId == autovehicleId).Manufacturer = context.Manufacturers.First(m => m.ManufacturerId == manufacturerId);
             context.SaveChanges();
         }
 
@@ -121,12 +121,7 @@ namespace Exercitii_laborator_18
                 throw new VehicleDoesNotExistsException();
             }
 
-            var auto = context.Autovehicles.Include(a => a.VehicleIdentificationCard).First(a => a.AutovehicleId == autovehicleId);
-            var oldVic = auto.VehicleIdentificationCard;
-
-            if (oldVic != null) context.VehicleIdentificationCards.Remove(oldVic);
-
-            context.Remove(auto);
+            context.Remove(context.Autovehicles.First(a => a.AutovehicleId == autovehicleId));
             context.SaveChanges();
             return autovehicleId;
         }
@@ -141,7 +136,7 @@ namespace Exercitii_laborator_18
             }
 
             var manufacturerToRemove = context.Manufacturers.First(m => m.ManufacturerId == manufacturerId);
-            context.Autovehicles.Include(a => a.Manufacturer).Where(a => a.ManufacturerId == manufacturerId).ToList().ForEach(a => a.Manufacturer = null);
+            context.Autovehicles.Include(a => a.Manufacturer).Where(a => a.Manufacturer.ManufacturerId == manufacturerId).ToList().ForEach(a => a.Manufacturer = null);
             context.Manufacturers.Remove(manufacturerToRemove);
 
             context.SaveChanges();
